@@ -1,3 +1,5 @@
+v 4.6.3 Name change at node-red dev team request.
+	New Versioning to following Tabulator Library versioning
 
 V 1.0.3 Bump version for npmjs update issue
 v 1.0.2	fixed emits not allowing table updates to browser added emitOnlyNewValues: false on widget startup

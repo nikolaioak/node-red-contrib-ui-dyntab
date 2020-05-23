@@ -1,6 +1,9 @@
 # node-red-contrib-ui-etable
 
-Node: This node was previously called node-red-node-ui-etable.
+Notes: 
+	.This node was previously called node-red-node-ui-etable, please
+	 remove it before using this node
+	.The versioning will now follow the Tabulator Library versioning
 
 This node is based on the capabilities of the Tabulator library and allows 
 the user to define complex - editable tables and constructs.
