@@ -4,12 +4,12 @@
   },
   "deprecated": false,
   "description": "A Node-RED UI Node to create an editable table based on the Tabulator libraries.",
-  "homepage": "https://github.com/Gippsman2017/node-red-node-ui-etable#readme",
+  "homepage": "https://github.com/Gippsman2017/node-red-contrib-ui-etable#readme",
   "keywords": [
     "node-red"
   ],
   "licence": "Apache V2.0",
-  "name": "node-red-node-ui-etable",
+  "name": "node-red-contrib-ui-etable",
   "node-red": {
     "nodes": {
       "etable": "etable.js"
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gippsman2017/node-red-node-ui-etable.git"
+    "url": "git+https://github.com/Gippsman2017/node-red-contrib-ui-etable.git"
   },
   "version": "1.0.3"
 }
