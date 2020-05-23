@@ -1,4 +1,4 @@
-# node-red-node-ui-etable
+# node-red-contrib-ui-etable
 This node is based on the capabilities of the Tabulator library and allows 
 the user to define complex - editable tables and constructs.
 
