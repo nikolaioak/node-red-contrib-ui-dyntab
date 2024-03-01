@@ -1,23 +1,22 @@
 {
   "bundleDependencies": [],
-  "dependencies": {
-  },
+  "dependencies": {},
   "deprecated": false,
-  "description": "A Node-RED UI Node to create an editable table based on the Tabulator libraries.",
-  "homepage": "https://github.com/Gippsman2017/node-red-contrib-ui-etable#readme",
+  "description": "A Node-RED UI Node which allows the user to define complex, dynamic, and editable tables based on the Tabulator library.",
+  "homepage": "https://github.com/nikolaioak/node-red-contrib-ui-dyntab",
   "keywords": [
     "node-red"
   ],
-  "licence": "Apache V2.0",
-  "name": "node-red-contrib-ui-etable",
+  "license": "Apache V2.0",
+  "name": "node-red-contrib-ui-dyntab",
   "node-red": {
     "nodes": {
-      "etable": "etable.js"
+      "dyntab": "dyntab.js"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gippsman2017/node-red-contrib-ui-etable.git"
+    "url": "git+https://github.com/nikolaioak/node-red-contrib-ui-dyntab.git"
   },
-  "version": "4.6.3"
+  "version": "1.0.0"
 }

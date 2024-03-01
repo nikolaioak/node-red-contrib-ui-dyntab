@@ -27,19 +27,19 @@ module.exports = function (RED) {
         }
     }
 
-    function HTML(config,dark) {
+    function HTML(config, dark) {
         var configAsJson = JSON.stringify(config);
         var mid = (dark) ? "_midnight" : "";
         var html = String.raw`
-                <link href='ui-etable/css/tabulator`+mid+`.min.css' rel='stylesheet' type='text/css'>
-                <script type='text/javascript' src='ui-etable/js/tabulator.js'></script>
-                <div id='ui_etable-{{$id}}'></div>
+                <link href='ui-dyntable/css/tabulator`+mid+`.min.css' rel='stylesheet' type='text/css'>
+                <script type='text/javascript' src='ui-dyntable/js/tabulator.js'></script>
+                <div id='ui_dyntable-{{$id}}'></div>
                 <input type='hidden' ng-init='init(` + configAsJson + `)'>
             `;
         return html;
     };
 
-    function eTableNode(config) {
+    function dynTableNode(config) {
         var done = null;
         var node = this;
         try {
@@ -52,7 +52,10 @@ module.exports = function (RED) {
                     var rgb = parseInt(ui.getTheme()["page-sidebar-backgroundColor"].value.substring(1), 16);   // convert rrggbb to decimal
                     luma = 0.2126 * ((rgb >> 16) & 0xff) + 0.7152 * ((rgb >>  8) & 0xff) + 0.0722 * ((rgb >>  0) & 0xff); // per ITU-R BT.709
                 }
-                if (config.height == 0) { config.height = 20; } // min height to 2 so auto will show something
+                // min height to 2 so auto will show something
+                if (config.height == 0) { 
+                    config.height = 20; 
+                }
 
                 config.columns = JSON.parse(config.payload);
                 delete config.payload;
@@ -79,7 +82,9 @@ module.exports = function (RED) {
                         };
                     },
                     beforeSend: function (msg, orig) {
-                        if (orig) { return orig.msg; }
+                        if (orig) { 
+                            return orig.msg; 
+                        }
                     },
                     initController: function ($scope, events) {
                         $scope.inited = false;
@@ -101,17 +106,22 @@ module.exports = function (RED) {
                                 opts.cellEdited = function(cell) {
                                     $scope.send({topic:cell.getField(),callback:"cellEdited",payload:cell.getData(),options:opts});
                                 };
+                                if (opts.movableRows) {
+                                    opts.rowMoved = function(row) {
+                                        $scope.send({callback:"rowMoved",payload:{row: row.getData(), position: row.getPosition()},options:opts});
+                                    };
+                                }
                             }
                             var table = new Tabulator(basediv, opts);
                         };
                         $scope.init = function (config) {
                             $scope.config = config;
-                            tablediv = '#ui_etable-' + $scope.$eval('$id')
+                            tablediv = '#ui_dyntable-' + $scope.$eval('$id')
                             var stateCheck = setInterval(function() {
                                 if (document.querySelector(tablediv) && $scope.tabledata) {
                                     clearInterval(stateCheck);
                                     $scope.inited = true;
-                                    createTable(tablediv,$scope.tabledata,$scope.config.columns,$scope.config.options,$scope.config.outputs);
+                                    createTable(tablediv, $scope.tabledata, $scope.config.columns, $scope.config.options, $scope.config.outputs);
                                     $scope.tabledata = [];
                                 }
                             }, 40);
@@ -119,11 +129,11 @@ module.exports = function (RED) {
                         $scope.$watch('msg', function (msg) {
                             var columns = $scope.config.columns;
                             var options = $scope.config.options;
-                            if(msg && msg.hasOwnProperty("config")){
-                                if(msg.config.options){
+                            if (msg && msg.hasOwnProperty("config")) {
+                                if (msg.config.options) {
                                     options = msg.config.options;
                                 }
-                                if(msg.config.columns){
+                                if (msg.config.columns) {
                                     columns = msg.config.columns;
                                 }
                             }
@@ -132,25 +142,31 @@ module.exports = function (RED) {
                                     $scope.tabledata = msg.payload;
                                     return;
                                 }
-                                createTable(tablediv,msg.payload,columns,options,$scope.config.outputs);
+                                createTable(tablediv, msg.payload, columns, options, $scope.config.outputs);
                             }
                         });
                     }
                 });
             }
         }
-        catch (e) { console.log(e); }
+        catch (e) { 
+            console.log(e); 
+        }
 
         node.on('close', function () {
-            if (done) { done(); }
+            if (done) { 
+                done(); 
+            }
         });
     }
 
-    RED.nodes.registerType('ui_etable', eTableNode);
+    RED.nodes.registerType('ui_dyntable', dynTableNode);
 
     var uipath = 'ui';
-    if (RED.settings.ui) { uipath = RED.settings.ui.path; }
-    var fullPath = path.join(RED.settings.httpNodeRoot, uipath, '/ui-etable/*').replace(/\\/g, '/');;
+    if (RED.settings.ui) { 
+        uipath = RED.settings.ui.path; 
+    }
+    var fullPath = path.join(RED.settings.httpNodeRoot, uipath, '/ui-dyntable/*').replace(/\\/g, '/');
     RED.httpNode.get(fullPath, function (req, res) {
         var options = {
             root: __dirname + '/lib/',
